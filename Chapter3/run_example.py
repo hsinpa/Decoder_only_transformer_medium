@@ -25,6 +25,9 @@ text_data_set = TextDataSet(tokens, tokenizer, sequence_size, stride)
 training_data_loader = DataLoader(text_data_set, batch_size=batch_size, shuffle=True, drop_last=True)
 x, y = next(iter(training_data_loader))
 
+print(x.shape)
+print(y.shape)
+
 # positional encoding with repetitive id
 positional_encoding = PositionalEncoding(vocab_size=tokenizer.n_vocab, batch_size=batch_size,
                                          sequence_size=sequence_size,
@@ -38,6 +41,5 @@ learnable_positional_encoding = LearnablePositionalEncoding(vocab_size=tokenizer
                                          embedding_dim=embedding_size)
 
 learnable_pe_embedding = learnable_positional_encoding(x)
-print(learnable_pe_embedding)
 
 
