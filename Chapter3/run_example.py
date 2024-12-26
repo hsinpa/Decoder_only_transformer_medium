@@ -36,7 +36,7 @@ positional_encoding = PositionalEncoding(vocab_size=tokenizer.n_vocab, batch_siz
 pe_embedding = positional_encoding(x)
 
 # learnable positional encoding
-learnable_positional_encoding = LearnablePositionalEncoding(vocab_size=tokenizer.n_vocab, batch_size=batch_size,
+learnable_positional_encoding = LearnablePositionalEncoding(vocab_size=tokenizer.n_vocab,
                                          sequence_size=sequence_size,
                                          embedding_dim=embedding_size)
 

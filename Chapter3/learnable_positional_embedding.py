@@ -3,7 +3,7 @@ from torch import nn
 
 
 class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, vocab_size: int, batch_size: int, sequence_size: int, embedding_dim: int):
+    def __init__(self, vocab_size: int, sequence_size: int, embedding_dim: int):
         super().__init__()
 
         self.token_embeddings = nn.Embedding(vocab_size, embedding_dim)

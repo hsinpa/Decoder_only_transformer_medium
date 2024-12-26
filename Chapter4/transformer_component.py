@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 
 from Chapter1.attention_component import MultiHeadAttention
+from Chapter3.learnable_positional_embedding import LearnablePositionalEncoding
 
 
 @dataclass
@@ -20,7 +21,32 @@ class TransformerConfig:
     device: torch.device
 
 
-class TransformerModel(nn.Module):
+class Transformer(nn.Module):
+    def __init__(self, config: TransformerConfig):
+        super().__init__()
+
+        self.embeddings = LearnablePositionalEncoding(vocab_size=config.vocab_size,
+                                                                    sequence_size=config.window_size,
+                                                                    embedding_dim=config.embed_dim, )
+
+        self.layers = nn.ModuleList([TransformerBlock(config) for _ in range(config.attention_layer_size)])
+        self.final_norm = nn.LayerNorm(config.embed_dim)
+        self.output_layer = nn.Linear(config.embed_dim, config.vocab_size, bias=True)
+
+    def forward(self, x):
+        x = self.embeddings(x)
+
+        for layer in self.layers:
+            x = layer(x)
+
+        x = self.final_norm(x)
+
+        x = self.output_layer(x)
+
+        return x
+
+
+class TransformerBlock(nn.Module):
     def __init__(self, config: TransformerConfig):
         super().__init__()
         self.layer_norm_1 = nn.LayerNorm(config.embed_dim)
